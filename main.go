@@ -38,7 +38,7 @@ func signUpHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
+	//minute change
 	for _, user := range users {
 		if user.Email == newUser.Email {
 			http.Error(w, `{"error": "User already exists"}`, http.StatusBadRequest)
