@@ -28,29 +28,29 @@ func main() {
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	if r.Method == http.MethodPost {
-		//handled for post method
-		var newUser User
-		err := json.NewDecoder(r.Body).Decode(&newUser)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		for _, user := range users {
-			if user.Email == newUser.Email {
-				http.Error(w, `{"error": "User already exists"}`, http.StatusBadRequest)
-				return
-			}
-		}
-
-		users = append(users, newUser)
-
-		response := map[string]string{"message": fmt.Sprintf("User %s created successfully", newUser.Email)}
-		json.NewEncoder(w).Encode(response)
-	} else {
+	if r.Method != http.MethodPost {
 		http.Error(w, `{"error": "No route defined for the following http method"}`, http.StatusBadRequest)
 	}
+
+	var newUser User
+	err := json.NewDecoder(r.Body).Decode(&newUser)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	for _, user := range users {
+		if user.Email == newUser.Email {
+			http.Error(w, `{"error": "User already exists"}`, http.StatusBadRequest)
+			return
+		}
+	}
+
+	users = append(users, newUser)
+
+	response := map[string]string{"message": fmt.Sprintf("User %s created successfully", newUser.Email)}
+	json.NewEncoder(w).Encode(response)
+
 }
 
 func signInHandler(w http.ResponseWriter, r *http.Request) {
