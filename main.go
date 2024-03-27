@@ -24,18 +24,6 @@ func main() {
 	fmt.Println("Server running on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
-func listUsers(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	response := map[string][]User{"users": users}
-	json.NewEncoder(w).Encode(response)
-}
-func greet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	response := map[string]string{"message": "Hello There!"}
-	json.NewEncoder(w).Encode(response)
-}
 
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -113,4 +101,17 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Error(w, `{"error": "No route defined for the following http method"}`, http.StatusBadRequest)
 	}
+}
+
+func listUsers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	response := map[string][]User{"users": users}
+	json.NewEncoder(w).Encode(response)
+}
+func greet(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	response := map[string]string{"message": "Hello There!"}
+	json.NewEncoder(w).Encode(response)
 }
