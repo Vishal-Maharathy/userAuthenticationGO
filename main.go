@@ -27,18 +27,15 @@ func main() {
 
 func signUpHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
 	if r.Method != http.MethodPost {
 		http.Error(w, `{"error": "No route defined for the following http method"}`, http.StatusBadRequest)
 	}
-
 	var newUser User
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	//minute change
 	for _, user := range users {
 		if user.Email == newUser.Email {
 			http.Error(w, `{"error": "User already exists"}`, http.StatusBadRequest)
